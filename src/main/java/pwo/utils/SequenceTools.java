@@ -3,18 +3,35 @@ package pwo.utils;
 import java.io.FileWriter;
 import java.io.BufferedWriter;
 import java.io.IOException;
+import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
 
 public class SequenceTools {
 
     private static String getTerms(SequenceGenerator sg,
             int from, int to, String sep) {
 
-        int i = from, stop = to, step = from > to ? -1 : 1;
+        //int i = from, stop = to, step = from > to ? -1 : 1;
+        int i = from, stop = to, step = 1;
+
         String terms = "";
+        if (from > to) {
+            i = to;
+            stop = from;
+        }
+        var termsL = new ArrayList<BigDecimal>();
 
         while (true) {
-            terms += sg.getTerm(i) + sep;
+            //terms += sg.getTerm(i) + sep;
+            termsL.add(sg.getTerm(i));
             if (i == stop) {
+                if (from > to) {
+                    Collections.reverse(termsL);
+                }
+                for (BigDecimal value : termsL) {
+                    terms += value.toString() + sep;
+                }
                 return terms.trim();
             }
             i += step;
